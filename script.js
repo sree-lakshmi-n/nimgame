@@ -1,5 +1,5 @@
-//end game loosing move
-//declare result
+//end game loosing move  done
+//declare result   
 //player turn initialise
 //row button disable issue        done
 
@@ -88,8 +88,15 @@ function makeMove(){
 		}
 	}
 	let optimal = optimal_move(stacks);
+	console.log(stacks);
 	if(optimal==undefined){
-		hideMatch(Math.ceil(Math.random()*(nim.getValue('maxRowNum'))));   // Do a random move and wait for the human to make a mistake
+		for(let i=0;i<stacks.length;i++){
+			if(stacks[i]!=0){
+				hideMatch(i+1);
+				break;
+			}
+		}
+		// hideMatch(Math.ceil(Math.random()*(nim.getValue('maxRowNum'))));   // Do a random move and wait for the human to make a mistake
 	}
 	else{
 		for(let i=0; i<optimal[1]; i++){
