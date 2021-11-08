@@ -1,0 +1,42 @@
+*,*::before,*::after{
+	box-sizing: border-box;
+}
+#game-area{
+	width: 70%;
+	margin: auto;
+	text-align: center;
+}
+.row{
+	margin: 1.2em 0;
+}
+.match{
+	background: #E1CEA7;
+	width: 4px;
+	height: 50px;
+	margin: 0 6px;
+	display: inline-block;
+	position: relative;
+}
+.match::before{
+	content: "";
+	background: #FBBE26;
+	padding: 3px;
+	border-radius: 50%;
+	position: absolute;
+	left: -1px;
+}
+.row-label{
+	float: right;
+	line-height: 50px;
+	border: 1px solid #E1CEA7;
+	padding: 0 0.4em;
+}
+.show{
+	visibility: visible;
+}
+.hide{
+	visibility: hidden;
+}
+.disable-pointer{
+	pointer-events: none;
+}

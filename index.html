@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<link href="style.css" rel="stylesheet" type="text/css" />
+    
+	<title>Nim Game</title>
+</head>
+<body>
+	<header>
+		<h1>Play Nim against your computer!</h1>
+		<p>In one move, you can remove any number of matches but only from one row. Select any 'Row button' and click it to REMOVE matches. After each move click 'PC move' to make the computer play. You win if you leave the LAST match for the computer.</p>
+		<p>At the start of a game, you have the first move, unless you allow the computer to play first by pressing the 'PC move' button.</p>
+		<span id="active-player"></span>
+	</header>
+	<main id="game-area"></main>
+	<section id="control-buttons">
+		<button id="new-game-btn" onclick="newGame()">New Game</button>
+		<button id="pc-move-btn" onclick="makeMove()">PC Move</button>
+	</section>
+	<script src="script.js"></script>
+</body>
+</html>
