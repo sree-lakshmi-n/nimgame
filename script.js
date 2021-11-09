@@ -4,7 +4,7 @@
 //row button disable issue        done
 
 function nimGame(){										// Global variables
-	this.activePlayer = "human";
+	this.activePlayer = "Human";
 	this.maxRowNum = 4;
 }
 nimGame.prototype.getValue = function(key){         // To get the value of global variables
@@ -26,7 +26,7 @@ function enableBtn(elem){
 	elem.classList.remove("disable-pointer");
 }
 function displayActivePlayer(){
-	$('active-player').innerText = nim.getValue('activePlayer');
+	$('active-player').innerText = nim.getValue('activePlayer') + " won";
 }
 
 var nim = new nimGame();
@@ -78,6 +78,7 @@ function noOfMatchesLeft(rowNum){
 	return matchesLeft;
 }
 function makeMove(){
+	// nim.setValue('activePlayer',"Comp");
 	let rows = _("row");
 	let stacks = [0,0,0,0];
 	for(let i = 0; i < rows.length; i++){
@@ -88,7 +89,6 @@ function makeMove(){
 		}
 	}
 	let optimal = optimal_move(stacks);
-	console.log(stacks);
 	if(optimal==undefined){
 		for(let i=0;i<stacks.length;i++){
 			if(stacks[i]!=0){
@@ -96,20 +96,31 @@ function makeMove(){
 				break;
 			}
 		}
-		// hideMatch(Math.ceil(Math.random()*(nim.getValue('maxRowNum'))));   // Do a random move and wait for the human to make a mistake
 	}
 	else{
+		if(isEndGame){
+			nim.setValue('activePlayer',"Comp");
+			displayActivePlayer();
+		}
 		for(let i=0; i<optimal[1]; i++){
 			hideMatch(optimal[0]+1);
 		}
 	}
-	nim.setValue('activePlayer',"human");
+	if(isEndGame && optimal==undefined){
+			nim.setValue('activePlayer',"Human");
+			displayActivePlayer();
+		}
+	// nim.setValue('activePlayer',"Human");
 	disableBtn($('pc-move-btn'));
 	enableRows();
 }
+function isEndGame(stacks){
+	var is_endgame = stacks.reduce((r, e) => r + (e > 1), 0) < 2; //counts the no. of rows and matches remaining. Alerts if it's the last move.
+	return is_endgame;
+}
 function optimal_move(stacks) {
   var stacks_xor = stacks.reduce((r, e) => r ^ e, 0);          // nimsum calculation
-  var is_endgame = stacks.reduce((r, e) => r + (e > 1), 0) < 2; //counts the no. of rows and matches remaining. Alerts if it's the last move.
+  var is_endgame = isEndGame(stacks);
   var move = stacks.reduce((move, stack, i) => {
     var take = stack - (is_endgame ^ stack ^ stacks_xor);
     return take > move[1] ? [i, take] : move;
@@ -117,24 +128,20 @@ function optimal_move(stacks) {
   return move[1] > 0 ? move : undefined;
 }
 function humanMove(rowNum){
-	
-	console.log(noOfMatchesLeft(rowNum));
+	// displayActivePlayer();
+	// nim.setValue('activePlayer',"Human");
 	if(noOfMatchesLeft(rowNum)>0){
 		disableOtherRows(rowNum-1);
 		enableBtn($('pc-move-btn'));
 	}															
 	hideMatch(rowNum);
-
-	 // For rowNum to be passed as 0, 1, 2, 3 instead of 1, 2, 3, 4
-	displayActivePlayer();
-	nim.setValue('activePlayer',"comp");
 }
 function newGame(){
 	let rows = _("row");
 	for(let i = 0; i < rows.length; i++) {
 	  showMatch(rows[i]);
 	}
-	nim.setValue('activePlayer',"human");
+	// nim.setValue('activePlayer',"Human");
 	enableBtn($('pc-move-btn'));
 	enableRows();
 }
