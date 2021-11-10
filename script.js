@@ -1,7 +1,3 @@
-//end game loosing move  done
-//declare result   
-//player turn initialise   done
-//row button disable issue        done
 
 function nimGame(){										// Global variables
 	this.activePlayer = "Human";
@@ -26,7 +22,7 @@ function enableBtn(elem){															// Enables the given button
 	elem.classList.remove("disable-pointer");
 }
 function displayActivePlayer(){												//result
-	$('active-player').innerText = nim.getValue('activePlayer');
+	$('active-player').innerText = "Playing now: " + nim.getValue('activePlayer');
 }
 
 var nim = new nimGame();
@@ -83,9 +79,7 @@ function noOfMatchesLeft(rowNum){
 	return matchesLeft;
 }
 /************************** Comp move *************************/
-function makeMove(){
-	nim.setValue('activePlayer',"Comp");
-	displayActivePlayer();
+function getStack(){
 	let rows = _("row");
 	let stacks = [0,0,0,0];
 	for(let i = 0; i < rows.length; i++){
@@ -95,6 +89,18 @@ function makeMove(){
 			}
 		}
 	}
+	return stacks;
+}
+function isAllZero(stacks){
+	if(stacks.every(item => item === 0)){
+		return true;
+	}
+	else return false;
+}
+function makeMove(){
+	nim.setValue('activePlayer',"Comp");
+	displayActivePlayer();
+	let stacks = getStack();
 	let optimal = optimal_move(stacks);
 	if(optimal==undefined){
 		for(let i=0;i<stacks.length;i++){
@@ -108,6 +114,9 @@ function makeMove(){
 		for(let i=0; i<optimal[1]; i++){
 			hideMatch(optimal[0]+1);
 		}
+	}
+	if(isAllZero(getStack())){
+		$('result').innerText = "Human wins";
 	}
 	nim.setValue('activePlayer',"Human");
 	disableBtn($('pc-move-btn'));
@@ -132,6 +141,9 @@ function humanMove(rowNum){
 	}															
 	hideMatch(rowNum);
 	nim.setValue('activePlayer',"Comp");
+	if(isAllZero(getStack())){
+		$('result').innerText = "Comp wins";
+	}
 }
 /************************** New Game Reset *************************/
 function newGame(){
